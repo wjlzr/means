@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -38,15 +39,15 @@ type (
 	}
 
 	User struct {
-		Id        int64          `db:"id"`         // ID
-		Nickname  string         `db:"nickname"`   // 昵称
-		Phone     string         `db:"phone"`      // 手机号
-		Sex       int64          `db:"sex"`        // 性别 1 男 2 女
-		Avatar    sql.NullString `db:"avatar"`     // 头像
-		Password  string         `db:"password"`   // 密码
-		DeletedAt sql.NullInt64  `db:"deleted_at"` // 1 已删除
-		CreatedAt sql.NullTime   `db:"created_at"` // 创建时间
-		UpdatedAt sql.NullTime   `db:"updated_at"` // 更新时间
+		Id        int64     `db:"id"`         // ID
+		Nickname  string    `db:"nickname"`   // 昵称
+		Phone     string    `db:"phone"`      // 手机号
+		Sex       int64     `db:"sex"`        // 性别 1 男 2 女
+		Avatar    string    `db:"avatar"`     // 头像
+		Password  string    `db:"password"`   // 密码
+		DeletedAt int64     `db:"deleted_at"` // 1 已删除
+		CreatedAt time.Time `db:"created_at"` // 创建时间
+		UpdatedAt time.Time `db:"updated_at"` // 更新时间
 	}
 )
 

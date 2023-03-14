@@ -27,8 +27,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	AddUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserInfo, error)
+	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*UserInfo, error)
 }
 
 type userClient struct {
@@ -39,8 +39,8 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserInfo, error) {
+	out := new(UserInfo)
 	err := c.cc.Invoke(ctx, User_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -48,8 +48,8 @@ func (c *userClient) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *userClient) AddUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userClient) AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*UserInfo, error) {
+	out := new(UserInfo)
 	err := c.cc.Invoke(ctx, User_AddUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (c *userClient) AddUser(ctx context.Context, in *IdRequest, opts ...grpc.Ca
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	GetUser(context.Context, *IdRequest) (*UserResponse, error)
-	AddUser(context.Context, *IdRequest) (*UserResponse, error)
+	GetUser(context.Context, *GetUserRequest) (*UserInfo, error)
+	AddUser(context.Context, *AddUserRequest) (*UserInfo, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -70,10 +70,10 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) GetUser(context.Context, *IdRequest) (*UserResponse, error) {
+func (UnimplementedUserServer) GetUser(context.Context, *GetUserRequest) (*UserInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) AddUser(context.Context, *IdRequest) (*UserResponse, error) {
+func (UnimplementedUserServer) AddUser(context.Context, *AddUserRequest) (*UserInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -90,7 +90,7 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 }
 
 func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -102,13 +102,13 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: User_GetUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUser(ctx, req.(*IdRequest))
+		return srv.(UserServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IdRequest)
+	in := new(AddUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func _User_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: User_AddUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).AddUser(ctx, req.(*IdRequest))
+		return srv.(UserServer).AddUser(ctx, req.(*AddUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

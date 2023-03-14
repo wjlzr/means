@@ -23,8 +23,8 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 	}
 }
 
-func (l *AddUserLogic) AddUser(in *user.IdRequest) (*user.UserResponse, error) {
+func (l *AddUserLogic) AddUser(in *user.AddUserRequest) (*user.UserInfo, error) {
 	// todo: add your logic here and delete this line
 
-	return &user.UserResponse{}, nil
+	return &user.UserInfo{}, nil
 }

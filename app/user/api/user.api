@@ -15,60 +15,73 @@ type User {
 	Avatar   string `json:"avatar"`
 }
 
-type (
-	RegisterReq {
-		Phone   string `json:"phone"`
-		Password string `json:"password"`
-	}
-	RegisterResp {
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"accessExpire"`
-		RefreshAfter int64  `json:"refreshAfter"`
-	}
-)
+//type (
+//	RegisterReq {
+//		Phone   string `json:"phone"`
+//		Password string `json:"password"`
+//	}
+//	RegisterResp {
+//		AccessToken  string `json:"accessToken"`
+//		AccessExpire int64  `json:"accessExpire"`
+//		RefreshAfter int64  `json:"refreshAfter"`
+//	}
+//)
+//
+//type (
+//	LoginReq {
+//		Phone string `json:"phone"`
+//		Password string `json:"password"`
+//	}
+//	LoginResp {
+//		AccessToken  string `json:"accessToken"`
+//		AccessExpire int64  `json:"accessExpire"`
+//		RefreshAfter int64  `json:"refreshAfter"`
+//	}
+//)
 
 type (
-	LoginReq {
-		Phone string `json:"phone"`
-		Password string `json:"password"`
-	}
-	LoginResp {
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"accessExpire"`
-		RefreshAfter int64  `json:"refreshAfter"`
-	}
-)
-
-type (
-	UserInfoReq {
+	GetUserReq {
+		Id int64 `json:"userInfo"`
 	}
 	UserInfoResp {
 		UserInfo User `json:"userInfo"`
 	}
 )
 
-@server(
-	prefix: user/v1
+type (
+	AddUserReq {
+		Phone    string `json:"phone"`
+		Nickname string `json:"nickname"`
+		Sex      int64  `json:"sex"`
+		Avatar   string `json:"avatar"`
+	}
 )
 
-service usercenter {
-
-	@doc "register"
-	@handler register
-	post /register (RegisterReq) returns (RegisterResp)
-
-	@doc "login"
-	@handler login
-	post /login (LoginReq) returns (LoginResp)
-}
+//@server(
+//	prefix: user/v1
+//)
+//
+//service usercenter {
+//
+//	@doc "register"
+//	@handler register
+//	post /register (RegisterReq) returns (RegisterResp)
+//
+//	@doc "login"
+//	@handler login
+//	post /login (LoginReq) returns (LoginResp)
+//}
 
 @server(
-	prefix: user/v1
+	prefix: api/v1
 	jwt: Auth
 )
 
 service user {
 	@doc "获取用户信息"
 	@handler getUser
-	get /get/:id (UserInfoReq) returns (UserInfoResp)
+	post /getUserInfo (GetUserReq) returns (UserInfoResp)
+	@doc "新增用户"
+	@handler addUser
+	post /addUser (AddUserReq) returns (UserInfoResp)
 }

@@ -22,12 +22,12 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) GetUser(ctx context.Context, in *user.IdRequest) (*user.UserResponse, error) {
+func (s *UserServer) GetUser(ctx context.Context, in *user.GetUserRequest) (*user.UserInfo, error) {
 	l := logic.NewGetUserLogic(ctx, s.svcCtx)
 	return l.GetUser(in)
 }
 
-func (s *UserServer) AddUser(ctx context.Context, in *user.IdRequest) (*user.UserResponse, error) {
+func (s *UserServer) AddUser(ctx context.Context, in *user.AddUserRequest) (*user.UserInfo, error) {
 	l := logic.NewAddUserLogic(ctx, s.svcCtx)
 	return l.AddUser(in)
 }

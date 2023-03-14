@@ -13,12 +13,13 @@ import (
 )
 
 type (
-	IdRequest    = user.IdRequest
-	UserResponse = user.UserResponse
+	AddUserRequest = user.AddUserRequest
+	GetUserRequest = user.GetUserRequest
+	UserInfo       = user.UserInfo
 
 	User interface {
-		GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
-		AddUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error)
+		GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserInfo, error)
+		AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*UserInfo, error)
 	}
 
 	defaultUser struct {
@@ -32,12 +33,12 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) GetUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+func (m *defaultUser) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserInfo, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.GetUser(ctx, in, opts...)
 }
 
-func (m *defaultUser) AddUser(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+func (m *defaultUser) AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*UserInfo, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.AddUser(ctx, in, opts...)
 }

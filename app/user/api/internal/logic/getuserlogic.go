@@ -24,7 +24,19 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 }
 
 func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.UserReply, err error) {
-	// todo: add your logic here and delete this line
 
+	//loginResp, err := l.svcCtx.UserRpc.GetUser(l.ctx, &usercenter.LoginReq{
+	//	AuthType: model.UserAuthTypeSystem,
+	//	AuthKey:  req.Mobile,
+	//	Password: req.Password,
+	//})
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//var resp types.LoginResp
+	//_ = copier.Copy(&resp, loginResp)
+	//
+	//return &resp, nil
 	return
 }

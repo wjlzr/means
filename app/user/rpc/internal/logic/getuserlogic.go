@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"means/common/xerr"
 
 	"means/app/user/rpc/internal/svc"
 	"means/app/user/rpc/types/user"
@@ -23,9 +24,18 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 	}
 }
 
-func (l *GetUserLogic) GetUser(in *user.IdRequest) (*user.UserResponse, error) {
+func (l *GetUserLogic) GetUser(in *user.GetUserRequest) (*user.UserInfo, error) {
 
-	//l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	userRes, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	if err != nil {
+		logx.WithContext(l.ctx).Errorf("Rpc login GetUser FindOne ERR:", err.Error())
+		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
+	}
 
-	return &user.UserResponse{}, nil
+	return &user.UserInfo{
+		Id:       userRes.Id,
+		Nickname: userRes.Nickname,
+		Avatar:   userRes.Avatar,
+		Phone:    userRes.Phone,
+	}, nil
 }
