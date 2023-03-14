@@ -1,0 +1,74 @@
+syntax = "v1"
+
+info(
+	title: "用户服务"
+	desc: "用户服务"
+	author: "bryce"
+	version: "v1"
+)
+
+type User {
+	Id       int64  `json:"id"`
+	Phone    string `json:"phone"`
+	Nickname string `json:"nickname"`
+	Sex      int64  `json:"sex"`
+	Avatar   string `json:"avatar"`
+}
+
+type (
+	RegisterReq {
+		Phone   string `json:"phone"`
+		Password string `json:"password"`
+	}
+	RegisterResp {
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+		RefreshAfter int64  `json:"refreshAfter"`
+	}
+)
+
+type (
+	LoginReq {
+		Phone string `json:"phone"`
+		Password string `json:"password"`
+	}
+	LoginResp {
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+		RefreshAfter int64  `json:"refreshAfter"`
+	}
+)
+
+type (
+	UserInfoReq {
+	}
+	UserInfoResp {
+		UserInfo User `json:"userInfo"`
+	}
+)
+
+@server(
+	prefix: user/v1
+)
+
+service usercenter {
+
+	@doc "register"
+	@handler register
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@doc "login"
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+@server(
+	prefix: user/v1
+	jwt: Auth
+)
+
+service user {
+	@doc "获取用户信息"
+	@handler getUser
+	get /get/:id (UserInfoReq) returns (UserInfoResp)
+}

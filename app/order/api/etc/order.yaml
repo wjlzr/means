@@ -1,0 +1,11 @@
+Name: order-api
+Host: 0.0.0.0
+Port: 1002
+
+#jwtAuth
+Auth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+
+Log:
+  ServiceName: order-api
+  Level: error
