@@ -12,4 +12,5 @@ type Config struct {
 	}
 
 	Cache cache.CacheConf
+	//Redis redis.Redis
 }

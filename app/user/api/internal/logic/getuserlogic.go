@@ -3,10 +3,11 @@ package logic
 import (
 	"context"
 
+	"github.com/jinzhu/copier"
+	"github.com/zeromicro/go-zero/core/logx"
 	"means/app/user/api/internal/svc"
 	"means/app/user/api/internal/types"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"means/app/user/rpc/user"
 )
 
 type GetUserLogic struct {
@@ -23,20 +24,22 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 	}
 }
 
-func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.UserReply, err error) {
+// GetUser
+//  @Description:
+//  @receiver l
+//  @param req
+//  @return resp
+//  @return err
+func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.GetUserReq, err error) {
 
-	//loginResp, err := l.svcCtx.UserRpc.GetUser(l.ctx, &usercenter.LoginReq{
-	//	AuthType: model.UserAuthTypeSystem,
-	//	AuthKey:  req.Mobile,
-	//	Password: req.Password,
-	//})
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//var resp types.LoginResp
-	//_ = copier.Copy(&resp, loginResp)
-	//
-	//return &resp, nil
-	return
+	userResp, err := l.svcCtx.UserRpc.GetUser(l.ctx, &user.GetUserRequest{
+		Id: req.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	_ = copier.Copy(&resp, userResp)
+
+	return resp, nil
 }

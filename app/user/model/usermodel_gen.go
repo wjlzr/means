@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/k0kubun/pp/v3"
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
@@ -72,6 +73,7 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error)
 	var resp User
 	err := m.QueryRowCtx(ctx, &resp, meansUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
 		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userRows, m.table)
+		pp.Println(query)
 		return conn.QueryRowCtx(ctx, v, query, id)
 	})
 	switch err {
