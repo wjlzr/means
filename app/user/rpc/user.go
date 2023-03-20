@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-
+	"github.com/zeromicro/go-zero/core/logx"
 	"means/app/user/rpc/internal/config"
 	"means/app/user/rpc/internal/server"
 	"means/app/user/rpc/internal/svc"
 	"means/app/user/rpc/types/user"
+	"means/common/interceptor/rpcserver"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -26,6 +27,8 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 	svr := server.NewUserServer(ctx)
 
+	logx.DisableStat()
+
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		user.RegisterUserServer(grpcServer, svr)
 
@@ -33,6 +36,10 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+
+	//rpc log
+	s.AddUnaryInterceptors(rpcserver.LoggerInterceptor)
+
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

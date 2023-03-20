@@ -19,6 +19,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config: c,
 
-		UserModel: model.NewUserModel(sqlConn, c.Cache),
+		UserModel: model.NewUserModel(sqlConn),
 	}
 }

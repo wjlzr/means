@@ -24,8 +24,8 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		errcode := xerr.SERVER_COMMON_ERROR
 		errmsg := "服务器开小差啦，稍后再来试一试"
 
-		causeErr := errors.Cause(err)                // err类型
-		if e, ok := causeErr.(*xerr.CodeError); ok { //自定义错误类型
+		causeErr := errors.Cause(err)           // err类型
+		if e, ok := err.(*xerr.CodeError); ok { //自定义错误类型
 			//自定义CodeError
 			errcode = e.GetErrCode()
 			errmsg = e.GetErrMsg()
@@ -39,8 +39,7 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 			}
 		}
 
-		logx.WithContext(r.Context()).Errorf("【API-ERR】 : %+v ", err)
-
+		//logx.WithContext(r.Context()).Errorf("【API-ERR】 : %+v ", err)
 		httpx.WriteJson(w, http.StatusBadRequest, Error(errcode, errmsg))
 	}
 }

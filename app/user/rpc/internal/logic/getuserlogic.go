@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"means/app/user/model"
 	"means/common/xerr"
 
 	"means/app/user/rpc/internal/svc"
@@ -24,12 +26,20 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 	}
 }
 
+// GetUser
+// @Description 获取用户信息
+// @Author bryce
+// @Date 2023-03-17 13:47:26
 func (l *GetUserLogic) GetUser(in *user.GetUserRequest) (*user.UserInfo, error) {
 
 	userRes, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+
 	if err != nil {
-		logx.WithContext(l.ctx).Errorf("Rpc login GetUser FindOne ERR:", err.Error())
-		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
+		if err == model.ErrNotFound {
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.INVALID_ERROR), "Logic GetUser FindOne ERR=====>%s", err.Error())
+		} else {
+			return nil, xerr.NewErrCode(xerr.DB_ERROR)
+		}
 	}
 
 	return &user.UserInfo{

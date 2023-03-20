@@ -11,3 +11,9 @@ Mysql:
 
 Cache:
   - Host: localhost:6379
+
+Log:
+  ServiceName: user-rpc
+  Encoding: plain
+  TimeFormat: 2006-01-02 15:04:05
+

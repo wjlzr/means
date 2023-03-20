@@ -4,10 +4,7 @@ import (
 	"fmt"
 )
 
-/**
-常用通用固定错误
-*/
-
+// CodeError 通用错误定义
 type CodeError struct {
 	errCode uint32
 	errMsg  string

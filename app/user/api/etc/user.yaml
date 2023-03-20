@@ -8,7 +8,8 @@ Auth:
 
 Log:
   ServiceName: user-api
-  Level: error
+  Encoding: plain
+  TimeFormat: 2006-01-02 15:04:05
 
 
 UserRpcConf:
